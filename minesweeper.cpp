@@ -3,6 +3,7 @@
 #include <random>
 #include <tuple>
 #include <algorithm>
+#include<cmath>
 
 using namespace std;
 
@@ -36,13 +37,25 @@ public:
     }
 
     void viewBoard() {
-        for (int i = 0; i < dimensions; i++) {
-            for (int j = 0; j < dimensions; j++) {
-                cout << board[i][j] << "  ";
-            }
-            cout << "\n";
-        }
+        
+    cout << "   ";
+    for(int i = 0; i < dimensions; i++) {
+        cout << i << "  ";
     }
+    cout << endl;
+
+    
+    for(int i = 0; i < dimensions; i++) {
+       
+        cout << i << "  ";
+
+        
+        for (int j = 0; j < dimensions; j++) {
+            cout << board[i][j] << "  ";
+        }
+        cout << endl;
+    }
+}
     void generateScore(){
         int count;
         for (int i = 0; i < dimensions; i++)
@@ -69,9 +82,86 @@ public:
         
     }
 };
+class UserBoard {
+public:
+    int dimensions;
+    vector<vector<char>> board;
+
+    // Constructor to generate user board
+    UserBoard(int dimensions, char x) : dimensions(dimensions) {
+        board.assign(dimensions, vector<char>(dimensions, x));
+    }
+
+    void printUserBoard() const {
+        // Print column indices
+        cout << "   ";
+        for (int i = 0; i < dimensions; ++i) {
+            cout << i << "  ";
+        }
+        cout << endl;
+
+        // Print the board
+        for (int i = 0; i < dimensions; ++i) {
+            // Print row index
+            cout << i << "  ";
+
+            // Print the contents of each cell
+            for (int j = 0; j < dimensions; ++j) {
+                cout << board[i][j] << "  ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+int getIntInput(int minVal, int maxVal) {
+    int input;
+    while (true) {
+        cout << "Enter an integer between " << minVal << " and " << maxVal << ": ";
+        if (cin >> input && input >= minVal && input <= maxVal) {
+            // Integer input within range
+            break;
+        } else {
+            // Clear input stream and ignore invalid input
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter an integer between " << minVal << " and " << maxVal << "." << endl;
+        }
+    }
+    return input;
+}
 
 int main() {
-    minesweeper obj1(10,10);
+    cout<<"Enter the dimensions of the board: ";
+    int dimension= getIntInput(5,200);
+    cout<<"Enter difficulty\n1)Easy->0\n2)Medium->1\n3)Hard->2\n";
+    int difficulty=getIntInput(0,2);
+    int density;
+    switch (difficulty)
+    {
+    case 0:
+        density=floor(0.1*dimension*dimension);
+        break;
+    case 1:
+        density=floor(0.15*dimension*dimension);
+        break;
+    case 2:
+        density=floor(0.2*dimension*dimension);
+        break;    
+    default:
+        break;
+    }
+    minesweeper obj1(dimension,density);
     obj1.viewBoard();
-    return 0;
+    UserBoard userboard(dimension,'.');
+    userboard.printUserBoard();
+    while(true){
+        cout<<"Options\n1)Flag a mine\n2)Reveal a cell\n3)Give up haha!\n";
+        int choice=getIntInput(1,3);
+    }
+    
+    
+        
+
+    
 }
