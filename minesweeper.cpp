@@ -11,10 +11,12 @@ class minesweeper {
 public:
     int dimensions, noMines;
     vector<vector<char>> board;
+    tuple<int,int> firstcord;
 
-    minesweeper(int dimensionsInput, int Mines)
+    minesweeper(int dimensionsInput, int Mines,int xfirstcord,int yfirstcord)
         : dimensions(dimensionsInput), noMines(Mines) {
-        board.assign(dimensions, vector<char>(dimensions, '0')); 
+        board.assign(dimensions, vector<char>(dimensions, '0'));
+        firstcord=make_tuple(xfirstcord,yfirstcord);
         placeMines();
     }
 
@@ -27,7 +29,7 @@ public:
             x = distr(rd);
             y = distr(rd);
             tuple<int, int> coord = make_tuple(x, y);
-            if (find(cords.begin(), cords.end(), coord) == cords.end()) {
+            if (find(cords.begin(), cords.end(), coord) == cords.end()&&firstcord!=coord) {
                 cords.push_back(coord);
                 board[x][y] = 'X'; 
                 
@@ -87,30 +89,34 @@ public:
     int dimensions;
     vector<vector<char>> board;
 
-    // Constructor to generate user board
+    
     UserBoard(int dimensions, char x) : dimensions(dimensions) {
         board.assign(dimensions, vector<char>(dimensions, x));
     }
 
-    void printUserBoard() const {
-        // Print column indices
+    void printUserBoard() const{     //const states that the object is not modified in this function
+        
         cout << "   ";
         for (int i = 0; i < dimensions; ++i) {
             cout << i << "  ";
         }
         cout << endl;
 
-        // Print the board
+        
         for (int i = 0; i < dimensions; ++i) {
-            // Print row index
+            
             cout << i << "  ";
 
-            // Print the contents of each cell
+            
             for (int j = 0; j < dimensions; ++j) {
                 cout << board[i][j] << "  ";
             }
             cout << endl;
         }
+    }
+    void revealcells(int x ,int y,minesweeper& msobject){      //passing minesweeper object as a parameter
+
+        
     }
 };
 
@@ -132,6 +138,7 @@ int getIntInput(int minVal, int maxVal) {
 }
 
 int main() {
+    minesweeper obj1(1,1,1,1);
     cout<<"Enter the dimensions of the board: ";
     int dimension= getIntInput(5,200);
     cout<<"Enter difficulty\n1)Easy->0\n2)Medium->1\n3)Hard->2\n";
@@ -151,13 +158,35 @@ int main() {
     default:
         break;
     }
-    minesweeper obj1(dimension,density);
-    obj1.viewBoard();
+    int x,y;  //the co-ordinates for the very first mine 
     UserBoard userboard(dimension,'.');
     userboard.printUserBoard();
+    int move=0;                      //move counter so first move is never a mine
     while(true){
         cout<<"Options\n1)Flag a mine\n2)Reveal a cell\n3)Give up haha!\n";
         int choice=getIntInput(1,3);
+        switch (choice)
+        {
+        case 2:
+            cout<<"enter the cell you wanna reveal one by one\n";
+            x=getIntInput(0,dimension-1);
+            y=getIntInput(0,dimension-1);
+            if (move==0){
+                obj1=minesweeper(dimension,density,x,y);
+                obj1.viewBoard();
+            }
+            userboard.revealcells(x,y,obj1);
+            move++;
+            
+            
+            break;
+        case 3: 
+            return 0;
+            break;
+        
+        default:
+            break;
+        }
     }
     
     
