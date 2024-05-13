@@ -56,7 +56,7 @@ public:
             cout<<"You lose!";
             exit(0);
         }
-        if(x<0||y<0||x>dimensions-1||y>dimensions-1) return;
+        if(x<0||y<0||x>dimensions-1||y>dimensions-1) return;        //overflow and stuff handled
         if((msobject.board[x][y]!='0')){
             boardU[x][y]=msobject.board[x][y];
 
@@ -80,10 +80,12 @@ public:
         
     }
     bool checkForWin(minesweeper& msobject){
-        size_t i;
+        size_t i=0;
         bool flag=false;
         int NumberofMines=msobject.noMines;
+        
         int NumberofUserMines=MineCordinates.size();
+        
         if(NumberofMines==NumberofUserMines){
             for (i = 0; i <NumberofMines; i++)
             {   

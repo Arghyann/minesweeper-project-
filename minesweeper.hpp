@@ -6,6 +6,7 @@
 #include <tuple>
 #include <random>
 #include <algorithm>
+#include<chrono>
 using namespace std;
 
 class minesweeper {
@@ -22,23 +23,26 @@ public:
     }
 
     void placeMines() {
-        vector<tuple<int, int>> cords;                  //declared four variables and generated a seed from the os just to get two random numbers. Good job cpp!
-        cords.clear();
-        random_device rd;
-        uniform_int_distribution<int> distr(0, dimensions - 1); 
-        int x, y;
-        while (cords.size() != noMines) {
-            x = distr(rd);
-            y = distr(rd);
-            tuple<int, int> coord = make_tuple(x, y);
-            if (find(cords.begin(), cords.end(), coord) == cords.end()&&firstcord!=coord) {
-                cords.push_back(coord);
-                board[x][y] = 'X'; 
-                
-            }
+    vector<tuple<int, int>> cords;
+    cords.clear();
+
+    // Seed using current system time
+    auto seed = chrono::system_clock::now().time_since_epoch().count();     //generating a seed did not give random number
+    mt19937 rd(seed);                                                       //added current time to get a truly random board?
+
+    uniform_int_distribution<int> distr(0, dimensions - 1); 
+    int x, y;
+    while (cords.size() != noMines) {
+        x = distr(rd);
+        y = distr(rd);
+        tuple<int, int> coord = make_tuple(x, y);
+        if (find(cords.begin(), cords.end(), coord) == cords.end() && firstcord != coord) {
+            cords.push_back(coord);
+            board[x][y] = 'X'; 
         }
-        generateScore();
     }
+    generateScore();
+}
 
     void viewBoard() {
         
