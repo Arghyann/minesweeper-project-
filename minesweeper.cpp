@@ -4,7 +4,7 @@
 #include <tuple>
 #include <algorithm>
 #include<cmath>
-
+#include<array>
 using namespace std;
 
 class minesweeper {
@@ -89,11 +89,13 @@ public:
     int dimensions;
     vector<vector<char>> boardU;
     vector<vector<bool>> visited;
+    vector<array<int,2>> MineCordinates;
 
     
     UserBoard(int dimensions, char x) : dimensions(dimensions) {
         boardU.assign(dimensions, vector<char>(dimensions, x));
         visited.assign(dimensions,vector<bool>(dimensions,false));
+
     }
 
     void printUserBoard() const{     //const states that the object is not modified in this function
@@ -149,6 +151,23 @@ public:
         }
         
     }
+    bool checkForWin(minesweeper& msobject){
+        size_t i;
+        bool flag=false;
+        int NumberofMines=msobject.noMines;
+        int NumberofUserMines=MineCordinates.size();
+        if(NumberofMines==NumberofUserMines){
+            for (i = 0; i <NumberofMines; i++)
+            {   
+                if(msobject.board[MineCordinates[i][0]][MineCordinates[i][1]]=='X') continue;
+                break;
+            }
+            
+        }
+        if(i==NumberofMines) return true;
+        return false;    
+    
+    }
 };
 
 int getIntInput(int minVal, int maxVal) {
@@ -190,6 +209,7 @@ int main() {
         break;
     }
     int x,y;  //the co-ordinates for the very first mine 
+    array<int,2> mineCord; //to hold mines temporarily after the user flags them
     UserBoard userboard(dimension,'.');
     userboard.printUserBoard();
     int move=0;                      //move counter so first move is never a mine
@@ -198,26 +218,39 @@ int main() {
         int choice=getIntInput(1,3);
         switch (choice)
         {
-        case 2:
-            cout<<"enter the cell you wanna reveal one by one\n";
-            x=getIntInput(0,dimension-1);
-            y=getIntInput(0,dimension-1);
-            if (move==0){
-                obj1=minesweeper(dimension,density,x,y);
-                obj1.viewBoard();
-            }
-            userboard.revealcells(x,y,obj1);
-            userboard.printUserBoard();
-            move++;
+            case 1:
+                cout<<"enter the co-ords of the cell you wanna flag one by one"<<endl;
+                mineCord[0]=getIntInput(0,dimension-1);
+                mineCord[1]=getIntInput(0,dimension-1);
+                userboard.MineCordinates.push_back(mineCord);
+                userboard.boardU[mineCord[0]][mineCord[1]]='X';
+                userboard.printUserBoard();
+                if(userboard.checkForWin(obj1)){
+                    cout<<"You won!!";
+                    exit(0);
+
+                } 
+                break;              
+            case 2:
+                cout<<"enter the cell you wanna reveal one by one\n";
+                x=getIntInput(0,dimension-1);
+                y=getIntInput(0,dimension-1);
+                if (move==0){
+                    obj1=minesweeper(dimension,density,x,y);
+                    obj1.viewBoard();
+                }
+                userboard.revealcells(x,y,obj1);
+                userboard.printUserBoard();
+                move++;
+                
+                
+                break;
+            case 3: 
+                return 0;
+                break;
             
-            
-            break;
-        case 3: 
-            return 0;
-            break;
-        
-        default:
-            break;
+            default:
+                break;
         }
     }
     
