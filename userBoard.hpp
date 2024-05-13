@@ -21,26 +21,30 @@ public:
 
     }
 
-    void printUserBoard() const{     //const states that the object is not modified in this function
-        
-        cout << "   ";
-        for (int i = 0; i < dimensions; ++i) {
+    void printUserBoard() const {                   //const states that the object is not modified in this call
+    cout << "    ";
+    for (int i = 0; i < dimensions; ++i) {
+        if (i < 10) {
             cout << i << "  ";
-        }
-        cout << endl;
-
-        
-        for (int i = 0; i < dimensions; ++i) {
-            
-            cout << i << "  ";
-
-            
-            for (int j = 0; j < dimensions; ++j) {
-                cout << boardU[i][j] << "  ";
-            }
-            cout << endl;
+        } else {
+            cout << i << " ";
         }
     }
+    cout << endl;
+
+    for (int i = 0; i < dimensions; ++i) {
+        if (i < 10) {
+            cout << i << "   ";
+        } else {
+            cout << i << "  ";
+        }
+
+        for (int j = 0; j < dimensions; ++j) {
+            cout << boardU[i][j] << "  ";
+        }
+        cout << endl;
+    }
+}     
     void revealcells(int x ,int y,minesweeper& msobject){      //passing minesweeper object as a parameter
         if(visited[x][y]){
             return;
