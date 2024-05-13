@@ -22,28 +22,28 @@ public:
     }
 
     void printUserBoard() const {                   //const states that the object is not modified in this call
-    cout << "    ";
-    for (int i = 0; i < dimensions; ++i) {
-        if (i < 10) {
-            cout << i << "  ";
-        } else {
-            cout << i << " ";
-        }
-    }
-    cout << endl;
-
-    for (int i = 0; i < dimensions; ++i) {
-        if (i < 10) {
-            cout << i << "   ";
-        } else {
-            cout << i << "  ";
-        }
-
-        for (int j = 0; j < dimensions; ++j) {
-            cout << boardU[i][j] << "  ";
+        cout << "    ";
+        for (int i = 0; i < dimensions; ++i) {
+            if (i < 10) {
+                cout << i << "  ";
+            } else {
+                cout << i << " ";
+            }
         }
         cout << endl;
-    }
+
+        for (int i = 0; i < dimensions; ++i) {
+            if (i < 10) {
+                cout << i << "   ";
+            } else {
+                cout << i << "  ";
+            }
+
+            for (int j = 0; j < dimensions; ++j) {
+                cout << boardU[i][j] << "  ";
+            }
+            cout << endl;
+        }
 }     
     void revealcells(int x ,int y,minesweeper& msobject){      //passing minesweeper object as a parameter
         if(visited[x][y]){
@@ -56,7 +56,8 @@ public:
             cout<<"You lose!";
             exit(0);
         }
-        if((msobject.board[x][y]!='0')||x==0||y==0||x==dimensions-1||y==dimensions-1){
+        if(x<0||y<0||x>dimensions-1||y>dimensions-1) return;
+        if((msobject.board[x][y]!='0')){
             boardU[x][y]=msobject.board[x][y];
 
             
