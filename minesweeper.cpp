@@ -87,11 +87,13 @@ public:
 class UserBoard {
 public:
     int dimensions;
-    vector<vector<char>> board;
+    vector<vector<char>> boardU;
+    vector<vector<bool>> visited;
 
     
     UserBoard(int dimensions, char x) : dimensions(dimensions) {
-        board.assign(dimensions, vector<char>(dimensions, x));
+        boardU.assign(dimensions, vector<char>(dimensions, x));
+        visited.assign(dimensions,vector<bool>(dimensions,false));
     }
 
     void printUserBoard() const{     //const states that the object is not modified in this function
@@ -109,13 +111,42 @@ public:
 
             
             for (int j = 0; j < dimensions; ++j) {
-                cout << board[i][j] << "  ";
+                cout << boardU[i][j] << "  ";
             }
             cout << endl;
         }
     }
     void revealcells(int x ,int y,minesweeper& msobject){      //passing minesweeper object as a parameter
+        if(visited[x][y]){
+            return;
 
+        }
+        visited[x][y]=true;                                     //updated visted first thing
+        if (msobject.board[x][y]=='X'){
+            msobject.viewBoard();
+            cout<<"You lose!";
+            exit(0);
+        }
+        if((msobject.board[x][y]!='0')||x==0||y==0||x==dimensions-1||y==dimensions-1){
+            boardU[x][y]=msobject.board[x][y];
+
+            
+        }
+        else{
+            //scout<<"check if it enters this part of the code.";
+            for (int i = -1; i < 2; i++)
+            {
+                for (int j = -1; j < 2; j++)                                            //recursively reveal cells in all 8 directions until a number is encountered! Recursion is fun 
+                {
+                    if(i+x<=dimensions-1&&i+x>-1&&j+y>-1&&j+y<=dimensions-1){
+                        revealcells(x+i,y+j,msobject);
+                    }
+                }
+                
+            }
+            
+
+        }
         
     }
 };
@@ -138,7 +169,7 @@ int getIntInput(int minVal, int maxVal) {
 }
 
 int main() {
-    minesweeper obj1(1,1,1,1);
+    minesweeper obj1(1,1,1,1);                 //initialised to garbage values
     cout<<"Enter the dimensions of the board: ";
     int dimension= getIntInput(5,200);
     cout<<"Enter difficulty\n1)Easy->0\n2)Medium->1\n3)Hard->2\n";
@@ -176,6 +207,7 @@ int main() {
                 obj1.viewBoard();
             }
             userboard.revealcells(x,y,obj1);
+            userboard.printUserBoard();
             move++;
             
             
