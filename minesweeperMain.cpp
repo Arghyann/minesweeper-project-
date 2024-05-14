@@ -75,7 +75,7 @@ int main() {
                 y=getIntInput(0,dimension-1);
                 if (move==0){
                     obj1=minesweeper(dimension,density,x,y);
-                    obj1.viewBoard(); //prints the solution board after initialising it
+                    //obj1.viewBoard(); //prints the solution board after initialising it
                 }
                 userboard.revealcells(x,y,obj1);
                 userboard.printUserBoard();
