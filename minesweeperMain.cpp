@@ -28,7 +28,7 @@ int getIntInput(int minVal, int maxVal) {
 int main() {
     minesweeper obj1(1,1,1,1);                 //initialised to garbage values
     cout<<"Enter the dimensions of the board: ";
-    int dimension= getIntInput(5,200);
+    int dimension= getIntInput(7,200);
     cout<<"Enter difficulty\n1)Easy->0\n2)Medium->1\n3)Hard->2\n";
     int difficulty=getIntInput(0,2);
     int density;
@@ -46,7 +46,7 @@ int main() {
     default:
         break;
     }
-    int x,y;  //the co-ordinates for the very first mine 
+    int x,y;  //the co-ordinates for the very first cell 
     array<int,2> mineCord; //to hold mines temporarily after the user flags them
     UserBoard userboard(dimension,'.');
     userboard.printUserBoard();

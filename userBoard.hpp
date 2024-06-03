@@ -51,6 +51,7 @@ public:
 
         }
         visited[x][y]=true;                                     //updated visted first thing
+        if(msobject.board[x][y]=='0') boardU[x][y]='0';
         if (msobject.board[x][y]=='X'){
             msobject.viewBoard();
             cout<<"You lose!";
@@ -68,6 +69,7 @@ public:
             {
                 for (int j = -1; j < 2; j++)                                            //recursively reveal cells in all 8 directions until a number is encountered! Recursion is fun 
                 {
+                    
                     if(i+x<=dimensions-1&&i+x>-1&&j+y>-1&&j+y<=dimensions-1){
                         revealcells(x+i,y+j,msobject);
                     }
